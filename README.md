@@ -34,3 +34,5 @@ Düzenle
 ## ✨ Katkı
 
 Pull request’ler memnuniyetle karşılanır. Lütfen `develop` branch'inden gönderin.
+
+balık adam yüzüyor!
