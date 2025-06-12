@@ -74,13 +74,13 @@ class CharacterScreen(QWidget):
         if prebuilt:
             self.character_list.addItem("--- Hazır Karakterler ---")
             for char in prebuilt:
-                info = f"{char['name']} adlı {char['race']} ırkından bir {char['class']}."
+                info = f"{char['name']} adlı {char['race']} ırkından bir {char['class_']}."
                 self.character_list.addItem(info)
 
         if custom:
             self.character_list.addItem("--- Özel Karakterler ---")
             for char in custom:
-                info = f"{char['name']} adlı {char['race']} ırkından bir {char['class']}."
+                info = f"{char['name']} adlı {char['race']} ırkından bir {char['class_']}."
                 self.character_list.addItem(info)
 
     def display_character_details(self, item):
@@ -90,7 +90,7 @@ class CharacterScreen(QWidget):
             if character.get("story"):
                 self.character_details.setText(character["story"])
             else:
-                details = f"Ad: {character.get('name', '')}\nIrk: {character.get('race', '')}\nSınıf: {character.get('class', '')}\n"
+                details = f"Ad: {character.get('name', '')}\nIrk: {character.get('race', '')}\nSınıf: {character.get('class_', '')}\n"
                 if "background" in character:
                     details += f"Geçmiş: {character.get('background')}\n"
                 if "personality" in character:
@@ -106,15 +106,15 @@ class CharacterScreen(QWidget):
     def create_character(self):
         name = self.name_input.text().strip()
         race = self.race_combo.currentText()
-        char_class = self.class_combo.currentText()
+        class_ = self.class_combo.currentText()
         description = self.description_input.toPlainText().strip()
 
-        if name and race and char_class:
-            story = generate_character_story(name, race, char_class, description)
+        if name and race and class_:
+            story = generate_character_story(name, race, class_, description)
             self.character_manager.add_character({
                 "name": name,
                 "race": race,
-                "class": char_class,
+                "class": class_,
                 "story": story
             })
             self.characters = self.character_manager.load_characters()

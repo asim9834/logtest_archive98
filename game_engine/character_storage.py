@@ -104,12 +104,12 @@ def add_character(character_data, filename=CHARACTER_FILE_PATH):
         return False
 
 # AI destekli karakter oluşturucu
-def generate_character_with_ai(name, race, char_class, description):
-    story = generate_character_story(name, race, char_class, description)
+def generate_character_with_ai(name, race, class_, description):
+    story = generate_character_story(name, race, class_, description)
     return {
         "name": name,
         "race": race,
-        "class": char_class,
+        "class": class_,
         "description": description,
         "story": story
     }

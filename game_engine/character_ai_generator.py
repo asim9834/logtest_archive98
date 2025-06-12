@@ -7,11 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def generate_character_story(name, race, char_class, description):
-    return f"{name}, bir {race} ve {char_class} olarak, {description} şeklinde bir geçmişe sahiptir."
+def generate_character_story(name, race, class_, description):
+    return f"{name}, bir {race} ve {class_} olarak, {description} şeklinde bir geçmişe sahiptir."
 
-def generate_character_with_ai(name, race, char_class, background):
-    prompt = f"Ad: {name}\nIrk: {race}\nSınıf: {char_class}\nGeçmiş: {background}"
+def generate_character_with_ai(name, race, class_, background):
+    prompt = f"Ad: {name}\nIrk: {race}\nSınıf: {class_}\nGeçmiş: {background}"
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
@@ -29,7 +29,7 @@ def generate_character_with_ai(name, race, char_class, background):
 
     name = extract_field("Ad")
     race = extract_field("Irk")
-    char_class = extract_field("Sınıf")
+    class_ = extract_field("Sınıf")
 
     backstory_match = re.search(r"Geçmiş[:：]\s*(.*)", content, re.DOTALL)
     backstory = backstory_match.group(1).strip() if backstory_match else ""
@@ -37,6 +37,6 @@ def generate_character_with_ai(name, race, char_class, background):
     return {
         "name": name,
         "race": race,
-        "char_class": char_class,
+        "class": class_,
         "backstory": backstory
     }

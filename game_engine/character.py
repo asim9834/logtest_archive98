@@ -6,7 +6,7 @@ from typing import Dict, List
 class Character:
     name: str
     race: str
-    char_class: str
+    class_: str
     level: int
     stats: Dict[str, int]  # Örn: {"strength": 10, "dexterity": 12, ...}
     background: str
@@ -18,7 +18,7 @@ class Character:
         return (
             f"Name: {self.name}\n"
             f"Race: {self.race}\n"
-            f"Class: {self.char_class}\n"
+            f"Class: {self.class_}\n"
             f"Level: {self.level}\n"
             f"Stats: {self.stats}\n"
             f"Alignment: {self.alignment}\n"
