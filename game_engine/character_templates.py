@@ -42,3 +42,5 @@ caelus_veylor = Character(
 
 # Liste halinde dışa aktar
 prebuilt_characters = [durok_steelhammer, sylen_varithiel, caelus_veylor]
+
+CHARACTER_CLASSES = ["Barbarian", "Rogue", "Wizard", "Fighter", "Bard", "Cleric", "Druid", "Paladin", "Ranger", "Monk", "Sorcerer", "Warlock"]

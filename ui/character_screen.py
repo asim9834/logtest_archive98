@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
 )
 
 from game_engine.character_storage import CharacterManager
+from game_engine.character_ai_generator import generate_character_story
 from game_engine.character_storage import load_custom_characters, save_characters_to_file
 from game_engine.character_ai_generator import generate_character_with_ai
 
@@ -35,11 +36,11 @@ class CharacterScreen(QWidget):
         create_layout.addWidget(self.name_input)
 
         self.race_combo = QComboBox()
-        self.race_combo.addItems(["İnsan", "Elf", "Cüce", "Ork"])
+        self.race_combo.addItems(["İnsan", "Elf", "Cüce", "Ejderdoğan", "Ork", "Tiefling", "Goblin", "Tabaxi", "Goliath", "Halfling"])
         create_layout.addWidget(self.race_combo)
 
         self.class_combo = QComboBox()
-        self.class_combo.addItems(["Savaşçı", "Büyücü", "Hırsız"])
+        self.class_combo.addItems(["Barbar", "Haydut", "Büyücü", "Savaşçı", "Ozan", "Druid", "Paladin", "Korucu", "Keşiş", "Sihirbaz"])
         create_layout.addWidget(self.class_combo)
 
         self.description_input = QTextEdit()
@@ -83,7 +84,7 @@ class CharacterScreen(QWidget):
 
         if name and race and char_class:
             story = generate_character_story(name, race, char_class, description)
-            self.character_manager.save_character({
+            self.character_manager.add_character({
                 "name": name,
                 "race": race,
                 "class": char_class,
