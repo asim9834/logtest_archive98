@@ -67,29 +67,40 @@ class CharacterScreen(QWidget):
 
     def load_character_list(self):
         self.character_list.clear()
-        characters = self.characters
-        for char in characters:
-            info = f"{char.get('name', 'Bilinmeyen')} adlı {char.get('race', 'ırksız')} ırkından bir {char.get('class', 'sınıfsız')}."
-            self.character_list.addItem(info)
+
+        prebuilt = [c for c in self.characters if "background" in c]
+        custom = [c for c in self.characters if "story" in c]
+
+        if prebuilt:
+            self.character_list.addItem("--- Hazır Karakterler ---")
+            for char in prebuilt:
+                info = f"{char['name']} adlı {char['race']} ırkından bir {char['class']}."
+                self.character_list.addItem(info)
+
+        if custom:
+            self.character_list.addItem("--- Özel Karakterler ---")
+            for char in custom:
+                info = f"{char['name']} adlı {char['race']} ırkından bir {char['class']}."
+                self.character_list.addItem(info)
 
     def display_character_details(self, item):
         name = item.text().split(" ")[0]
         character = next((c for c in self.characters if c.get("name") == name), None)
         if character:
-            if "story" in character:
+            if character.get("story"):
                 self.character_details.setText(character["story"])
             else:
-                details = f"Ad: {character.get('name')}\nIrk: {character.get('race')}\nSınıf: {character.get('class')}\n"
+                details = f"Ad: {character.get('name', '')}\nIrk: {character.get('race', '')}\nSınıf: {character.get('class', '')}\n"
                 if "background" in character:
                     details += f"Geçmiş: {character.get('background')}\n"
                 if "personality" in character:
-                    details += f"Karakter: {character.get('personality')}\n"
+                    etails += f"Kişilik: {character.get('personality')}\n"
                 if "abilities" in character:
-                    abilities = ', '.join(character.get("abilities", []))
-                    details += f"Yetenekler: {abilities}\n"
+                    details += f"Yetenekler: {', '.join(character.get('abilities', []))}\n"
                 if "alignment" in character:
                     details += f"Taraf: {character.get('alignment')}\n"
                 self.character_details.setText(details)
+
 
 
     def create_character(self):
@@ -106,6 +117,7 @@ class CharacterScreen(QWidget):
                 "class": char_class,
                 "story": story
             })
+            self.characters = self.character_manager.load_characters()
             self.load_character_list()
             self.character_details.setText(story)
 
