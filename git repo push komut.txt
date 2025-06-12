@@ -1,0 +1,5 @@
+TERMINAL
+
+git add .
+git commit -m "fix: <kısa açıklama>"
+git push

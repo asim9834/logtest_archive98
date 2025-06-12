@@ -28,5 +28,11 @@
         "race": "İnsan",
         "class": "Barbar",
         "story": "bubba, bir İnsan ve Barbar olarak, Erken yaşta tüccar babasından uzun yolculuklara çıkmayı öğrendi, binek araçlara ve hayvanlara karşı yüksek ilgisi buradan gelmektedir. Ancak geçinebilmek için uzun yıllar tamirci olarak çalıştı. Gücü kuvveti bu tarz ağır işlerden kazandığı tecrübeler sayesinde gayet yerinde. Tüm bunların yanında bir de annesinde güzel yemekler yapmayı öğrenmişti. Elinden her iş gelir, çok mahretlidir. en büyük hayali bir gün huzurlu bir hayat kurup bir at arabası dükkanı açmak. Ne yazık ki gençliğinin baharında kuzeni tarafından dolandırıldı, kendisine iftira atılarak itibarı yerle bir edildi, her şeyi elinden alındı ve yerel lordu tarafından sürgün edildi. Özünde iyi niyetli biri olsa da öfke problemleri var. Minik ve tatlı olan her şeye karşı yüksek merhameti bir zaaf bile sayılabilir. Kendisine yapılan haksızlığın intikamını almadan asla rahat bir uyku uyuyamayacak. Belki de alkol bağımlılığının bir diğer sebebi budur.(ve meşhur bira göbeğinin) şeklinde bir geçmişe sahiptir."
+    },
+    {
+        "name": "Malfart",
+        "race": "İnsan",
+        "class": "Barbar",
+        "story": "Malfart, bir İnsan ve Barbar olarak, dağdan geldi dağa gidecek şeklinde bir geçmişe sahiptir."
     }
 ]

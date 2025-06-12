@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
     QTextEdit, QComboBox, QLineEdit, QMessageBox
 )
 
+from game_engine.character_templates import prebuilt_characters
 from game_engine.character_storage import CharacterManager
 from game_engine.character_ai_generator import generate_character_story
 from game_engine.character_storage import load_custom_characters, save_characters_to_file
@@ -16,6 +17,7 @@ class CharacterScreen(QWidget):
         self.on_back_callback = on_back_callback
         self.character_manager = CharacterManager()
         self.characters = load_custom_characters()
+        self.characters.extend([c.__dict__ for c in prebuilt_characters])
 
         self.init_ui()
 
@@ -74,7 +76,21 @@ class CharacterScreen(QWidget):
         name = item.text().split(" ")[0]
         character = next((c for c in self.characters if c.get("name") == name), None)
         if character:
-            self.character_details.setText(character.get("story", "Detay bulunamadı."))
+            if "story" in character:
+                self.character_details.setText(character["story"])
+            else:
+                details = f"Ad: {character.get('name')}\nIrk: {character.get('race')}\nSınıf: {character.get('class')}\n"
+                if "background" in character:
+                    details += f"Geçmiş: {character.get('background')}\n"
+                if "personality" in character:
+                    details += f"Karakter: {character.get('personality')}\n"
+                if "abilities" in character:
+                    abilities = ', '.join(character.get("abilities", []))
+                    details += f"Yetenekler: {abilities}\n"
+                if "alignment" in character:
+                    details += f"Taraf: {character.get('alignment')}\n"
+                self.character_details.setText(details)
+
 
     def create_character(self):
         name = self.name_input.text().strip()
