@@ -1,42 +1,68 @@
-
 import os
 import re
-import openai
-from dotenv import load_dotenv
+import random
 
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Eğer AI entegrasyonu istenirse bu satırlar aktif edilir:
+# import openai
+# from dotenv import load_dotenv
+# load_dotenv()
+# openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def generate_character_story(name, race, class_, description):
-    return f"{name}, bir {race} ve {class_} olarak, {description} şeklinde bir geçmişe sahiptir."
+def generate_character_story(name: str, race: str, class_: str, description: str) -> str:
+    """
+    Basit bir hikaye üretici. İsim, ırk, sınıf ve tanım girdilerinden karakter hikayesi oluşturur.
+    Eğer AI kullanılırsa, bu fonksiyon yerine OpenAI çağrısı yapılır.
+    """
+    intro = f"{name}, bir {race} ırkından ve {class_} sınıfından biri olarak tanınıyor."
 
-def generate_character_with_ai(name, race, class_, background):
-    prompt = f"Ad: {name}\nIrk: {race}\nSınıf: {class_}\nGeçmiş: {background}"
+    if description:
+        intro += f" Geçmişinde: {description}"
+
+    traits = [
+        "Cesur yürekli",
+        "Kurnaz zekalı",
+        "Gizemli bir geçmişe sahip",
+        "Sadakatiyle bilinir",
+        "Gölge gibi sessiz hareket eden"
+    ]
+
+    intro += " " + random.choice(traits) + "."
+    return intro
+
+# AI destekli karakter üretimi (şu an devre dışı, ama kolayca aktif edilebilir)
+def generate_character_with_ai(name: str, race: str, class_: str, description: str) -> dict:
+    """
+    Karakter sözlüğü döner. AI ya da basit metinle hikaye üretimi yapılır.
+    """
+
+    # Eğer AI kullanılacaksa bu blok aktif edilebilir:
+    """
+    prompt = f"""
+    Karakter Adı: {name}
+    Irk: {race}
+    Sınıf: {class_}
+    Geçmiş: {description}
+
+    Bu karakterin detaylı bir hikayesini yaz:
+    """
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
-            {"role": "system", "content": "Bir fantastik RPG karakteri üretici olarak davran. Cevabında 'Ad:', 'Irk:', 'Sınıf:', 'Geçmiş:' başlıklarını sırayla kullan."},
+            {"role": "system", "content": "Sen bir RPG hikaye yazarı AI'sın."},
             {"role": "user", "content": prompt}
         ],
-        temperature=0.7
+        temperature=0.8
     )
+    story = response.choices[0].message["content"]
+    """
 
-    content = response.choices[0].message["content"]
-
-    def extract_field(label):
-        match = re.search(rf"{label}[:：]\s*(.*)", content)
-        return match.group(1).strip() if match else "Bilinmeyen"
-
-    name = extract_field("Ad")
-    race = extract_field("Irk")
-    class_ = extract_field("Sınıf")
-
-    backstory_match = re.search(r"Geçmiş[:：]\s*(.*)", content, re.DOTALL)
-    backstory = backstory_match.group(1).strip() if backstory_match else ""
+    # Geçici olarak AI devre dışı:
+    story = generate_character_story(name, race, class_, description)
 
     return {
         "name": name,
         "race": race,
         "class": class_,
-        "backstory": backstory
+        "description": description,
+        "story": story
     }
