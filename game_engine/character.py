@@ -1,28 +1,25 @@
+# game_engine/character.py
 
-from dataclasses import dataclass, field
-from typing import Dict, List
-
-@dataclass
 class Character:
-    name: str
-    race: str
-    class_: str
-    level: int
-    stats: Dict[str, int]  # Örn: {"strength": 10, "dexterity": 12, ...}
-    background: str
-    personality: str
-    abilities: List[str] = field(default_factory=list)
-    alignment: str = "Neutral"
+    def __init__(self, name, race, class_, story=""):
+        self.name = name
+        self.race = race
+        self.class_ = class_
+        self.story = story
 
-    def summary(self) -> str:
-        return (
-            f"Name: {self.name}\n"
-            f"Race: {self.race}\n"
-            f"Class: {self.class_}\n"
-            f"Level: {self.level}\n"
-            f"Stats: {self.stats}\n"
-            f"Alignment: {self.alignment}\n"
-            f"Background: {self.background}\n"
-            f"Personality: {self.personality}\n"
-            f"Abilities: {', '.join(self.abilities)}"
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "race": self.race,
+            "class": self.class_,
+            "story": self.story
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            name=data.get("name", ""),
+            race=data.get("race", ""),
+            class_=data.get("class", ""),
+            story=data.get("story", "")
         )
