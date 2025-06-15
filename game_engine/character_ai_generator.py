@@ -37,14 +37,13 @@ def generate_character_with_ai(name: str, race: str, class_: str, description: s
 
     # Eğer AI kullanılacaksa bu blok aktif edilebilir:
     """
-    prompt = f"""
-    Karakter Adı: {name}
+    prompt = f\"\"\"Karakter Adı: {name}
     Irk: {race}
     Sınıf: {class_}
     Geçmiş: {description}
 
     Bu karakterin detaylı bir hikayesini yaz:
-    """
+    \"\"\"
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
