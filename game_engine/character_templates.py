@@ -44,3 +44,5 @@ caelus_veylor = Character(
 prebuilt_characters = [durok_steelhammer, sylen_varithiel, caelus_veylor]
 
 CHARACTER_CLASSES = ["Barbarian", "Rogue", "Wizard", "Fighter", "Bard", "Cleric", "Druid", "Paladin", "Ranger", "Monk", "Sorcerer", "Warlock"]
+
+CHARACTER_RACES = ["İnsan", "Elf", "Cüce", "Ejderdoğan", "Ork", "Tiefling", "Goblin", "Tabaxi", "Goliath", "Halfling"]
