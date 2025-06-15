@@ -2,13 +2,34 @@
   "Başlangıç Kampı": {
     "açıklama": "Sakin bir orman kenarında, maceracıların dinlenmek için kullandığı bir kamp alanı."
   },
-  "Karanlık Orman": {
-    "açıklama": "Yoğun sis ve uğursuz fısıltılarla dolu, pek az kişi buradan sağ dönebilmiştir."
-  },
   "Eski Yol": {
     "açıklama": "Ticaret yollarından biri olan bu taş döşeli yol, kamp alanını şehir kapısına bağlar."
   },
   "Şehir Kapısı": {
     "açıklama": "Uzakta görkemli kulelerin silueti belirmiş, burası büyük şehrin girişi."
+  },
+  "orman_girisi": {
+    "açıklama": "Karanlık ormanın kenarında, bilinmeyene açılan bir patika başlıyor."
+  },
+  "Karanlık Orman": {
+    "açıklama": "Yoğun sis ve uğursuz fısıltılarla dolu, pek az kişi buradan sağ dönebilmiştir."
+  },
+  "eski_mezarlik": {
+    "açıklama": "Sislerin sardığı, terk edilmiş ve uğursuz bir mezarlık alanı."
+  },
+  "gizemli_magaza": {
+    "açıklama": "Yaşlı bir büyücünün işlettiği, nadir eşyaların bulunduğu bir dükkan."
+  },
+  "kraliyet_sarayi": {
+    "açıklama": "Altınla bezeli duvarlar ve karmaşık entrikalarla dolu kraliyet sarayı."
+  },
+  "kuzey_kalesi": {
+    "açıklama": "Kuzeyin soğuk dağlarında, terk edilmiş ama hâlâ sağlam duran bir kale."
+  },
+  "yeraltı_zindani": {
+    "açıklama": "Karanlıkta yankılanan çığlıkların duyulduğu, lanetli bir zindan."
+  },
+  "göl_kenari": {
+    "açıklama": "Sessiz, huzurlu ama suyun derinlerinde bir şeylerin gizlendiği bir göl kıyısı."
   }
 }
