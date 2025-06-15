@@ -102,14 +102,14 @@ class CharacterScreen(QWidget):
     def create_character(self):
         name = self.name_input.text().strip()
         race = self.race_combo.currentText()
-        char_class = self.class_combo.currentText()
+        class_ = self.class_combo.currentText()
         description = self.description_input.toPlainText().strip()
 
         if not name:
             QMessageBox.warning(self, "Error", "Please enter a name.")
             return
 
-        character = generate_character_with_ai(name, race, char_class, description)
+        character = generate_character_with_ai(name, race, class_, description)
         self.character_info.setPlainText(character["story"])
         self.temp_character = character  # geçici olarak tut
 
@@ -135,7 +135,7 @@ class CharacterScreen(QWidget):
         name = item.text()
         character = next((c for c in prebuilt_characters if c.name == name), None)
         if character:
-            text = f"{character.name} - {character.race} - {character.char_class}\n\n{character.background}"
+            text = f"{character.name} - {character.race} - {character.class_}\n\n{character.background}"
             self.character_info.setText(text)
 
     def display_custom(self, item):
