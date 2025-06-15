@@ -11,6 +11,7 @@ from game_engine.character_ai_generator import generate_character_with_ai
 from game_engine.character_templates import CHARACTER_CLASSES, CHARACTER_RACES
 from game_engine.character import Character
 from game_engine.prebuilt_characters import prebuilt_characters
+from ui.character_card import CharacterCard
 
 
 class CharacterScreen(QWidget):
@@ -73,9 +74,10 @@ class CharacterScreen(QWidget):
         self.image_label.setAlignment(Qt.AlignCenter)
         center_panel.addWidget(self.image_label)
 
-        self.character_info = QTextEdit()
-        self.character_info.setReadOnly(True)
-        center_panel.addWidget(self.character_info)
+        self.character_card_container = QVBoxLayout()
+        self.character_card_widget = CharacterCard({})
+        self.character_card_container.addWidget(self.character_card_widget)
+        center_panel.addLayout(self.character_card_container)
 
         main_layout.addLayout(center_panel, 2)
 
@@ -110,8 +112,8 @@ class CharacterScreen(QWidget):
             return
 
         character = generate_character_with_ai(name, race, class_, description)
-        self.character_info.setPlainText(character["story"])
-        self.temp_character = character  # geçici olarak tut
+        self.temp_character = character
+        self.display_character_card(character)
 
     def generate_random_character(self):
         import random
@@ -131,19 +133,26 @@ class CharacterScreen(QWidget):
         else:
             QMessageBox.warning(self, "Warning", "No character to save.")
 
+    def display_character_card(self, character_dict):
+        # Var olan kartı temizle ve yeni kartı ekle
+        for i in reversed(range(self.character_card_container.count())):
+            widget = self.character_card_container.itemAt(i).widget()
+            if widget:
+                widget.deleteLater()
+        self.character_card_widget = CharacterCard(character_dict)
+        self.character_card_container.addWidget(self.character_card_widget)
+
     def display_prebuilt(self, item):
         name = item.text()
         character = next((c for c in prebuilt_characters if c.name == name), None)
         if character:
-            text = f"{character.name} - {character.race} - {character.class_}\n\n{character.background}"
-            self.character_info.setText(text)
+            self.display_character_card(character.to_dict())
 
     def display_custom(self, item):
         name = item.text()
         character = self.character_manager.get_character(name)
         if character:
-            text = f"{character['name']} - {character['race']} - {character['class']}\n\n{character.get('story', '')}"
-            self.character_info.setText(text)
+            self.display_character_card(character)
 
     def start_game_with_selected(self):
         item = self.custom_list.currentItem()
