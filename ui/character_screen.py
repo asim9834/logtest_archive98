@@ -1,8 +1,8 @@
 # character_screen.py
+
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
-    QListWidget, QTextEdit, QComboBox, QLineEdit, QMessageBox,
-    QScrollArea, QFrame
+    QListWidget, QTextEdit, QComboBox, QLineEdit, QMessageBox
 )
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
@@ -46,6 +46,7 @@ class CharacterScreen(QWidget):
         self.description_input.setPlaceholderText("Backstory")
         left_panel.addWidget(self.description_input)
 
+        # Karakter oluşturma butonları
         self.create_button = QPushButton("create")
         self.create_button.clicked.connect(self.create_character)
         left_panel.addWidget(self.create_button)
@@ -54,6 +55,7 @@ class CharacterScreen(QWidget):
         self.random_button.clicked.connect(self.generate_random_character)
         left_panel.addWidget(self.random_button)
 
+        # Ana menü ve oyuna başla
         self.back_button = QPushButton("back")
         self.back_button.clicked.connect(self.on_back_callback)
         left_panel.addWidget(self.back_button)
@@ -71,6 +73,7 @@ class CharacterScreen(QWidget):
         self.image_label.setAlignment(Qt.AlignCenter)
         center_panel.addWidget(self.image_label)
 
+        # Karakter kartı (ayrıntılı görünüm)
         self.character_card_container = QVBoxLayout()
         self.character_card_widget = CharacterCard({})
         self.character_card_container.addWidget(self.character_card_widget)
@@ -81,29 +84,33 @@ class CharacterScreen(QWidget):
         # === SAĞ PANEL ===
         right_panel = QVBoxLayout()
 
+        # Hazır karakterler listesi
         self.prebuilt_list = QListWidget()
         self.prebuilt_list.addItem("--- PREBUILT CHARACTERS ---")
         for c in prebuilt_characters:
             self.prebuilt_list.addItem(f"{c.name}")
         self.prebuilt_list.itemClicked.connect(self.display_prebuilt)
+        right_panel.addWidget(self.prebuilt_list)
 
+        # Özel karakterler listesi
         self.custom_list = QListWidget()
         self.custom_list.addItem("--- CUSTOM CHARACTERS ---")
         for c in self.custom_characters:
             self.custom_list.addItem(f"{c['name']}")
         self.custom_list.itemClicked.connect(self.display_custom)
-
-        right_panel.addWidget(self.prebuilt_list)
         right_panel.addWidget(self.custom_list)
 
-        # === SAĞ PANEL ALT BUTONLARI ===
+        # === SAĞ PANEL ALTI: BUTONLAR ===
         self.save_button = QPushButton("save")
+        self.save_button.setObjectName("save_button")
         self.save_button.clicked.connect(self.save_character)
 
         self.edit_button = QPushButton("edit")
+        self.edit_button.setObjectName("edit_button")
         self.edit_button.clicked.connect(self.edit_selected_character)
 
         self.delete_button = QPushButton("delete")
+        self.delete_button.setObjectName("delete_button")
         self.delete_button.clicked.connect(self.delete_selected_character)
 
         right_panel.addWidget(self.save_button)
@@ -112,6 +119,7 @@ class CharacterScreen(QWidget):
 
         main_layout.addLayout(right_panel, 1)
 
+    # === KARAKTER OLUŞTURMA ===
     def create_character(self):
         name = self.name_input.text().strip()
         race = self.race_combo.currentText()
