@@ -1,3 +1,4 @@
+# character_screen.py
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QListWidget, QTextEdit, QComboBox, QLineEdit, QMessageBox,
@@ -53,10 +54,6 @@ class CharacterScreen(QWidget):
         self.random_button.clicked.connect(self.generate_random_character)
         left_panel.addWidget(self.random_button)
 
-        self.save_button = QPushButton("save")
-        self.save_button.clicked.connect(self.save_character)
-        left_panel.addWidget(self.save_button)
-
         self.back_button = QPushButton("back")
         self.back_button.clicked.connect(self.on_back_callback)
         left_panel.addWidget(self.back_button)
@@ -99,6 +96,20 @@ class CharacterScreen(QWidget):
         right_panel.addWidget(self.prebuilt_list)
         right_panel.addWidget(self.custom_list)
 
+        # === SAĞ PANEL ALT BUTONLARI ===
+        self.save_button = QPushButton("save")
+        self.save_button.clicked.connect(self.save_character)
+
+        self.edit_button = QPushButton("edit")
+        self.edit_button.clicked.connect(self.edit_selected_character)
+
+        self.delete_button = QPushButton("delete")
+        self.delete_button.clicked.connect(self.delete_selected_character)
+
+        right_panel.addWidget(self.save_button)
+        right_panel.addWidget(self.edit_button)
+        right_panel.addWidget(self.delete_button)
+
         main_layout.addLayout(right_panel, 1)
 
     def create_character(self):
@@ -133,8 +144,28 @@ class CharacterScreen(QWidget):
         else:
             QMessageBox.warning(self, "Warning", "No character to save.")
 
+    def edit_selected_character(self):
+        item = self.custom_list.currentItem()
+        if item:
+            name = item.text()
+            character = self.character_manager.get_character(name)
+            if character:
+                updated_story = self.description_input.toPlainText().strip()
+                character["story"] = updated_story
+                self.character_manager.update_character(character)
+                QMessageBox.information(self, "Updated", f"{name} updated.")
+
+    def delete_selected_character(self):
+        item = self.custom_list.currentItem()
+        if item:
+            name = item.text()
+            confirmed = QMessageBox.question(self, "Confirm Delete", f"Delete {name}?", QMessageBox.Yes | QMessageBox.No)
+            if confirmed == QMessageBox.Yes:
+                self.character_manager.delete_character(name)
+                self.custom_list.takeItem(self.custom_list.row(item))
+                QMessageBox.information(self, "Deleted", f"{name} silindi.")
+
     def display_character_card(self, character_dict):
-        # Var olan kartı temizle ve yeni kartı ekle
         for i in reversed(range(self.character_card_container.count())):
             widget = self.character_card_container.itemAt(i).widget()
             if widget:
@@ -155,25 +186,9 @@ class CharacterScreen(QWidget):
             self.display_character_card(character)
 
     def start_game_with_selected(self):
-        # Öncelik sırası: hazır karakter → özel karakter
-        selected_prebuilt = self.prebuilt_list.currentItem()
-        selected_custom = self.custom_list.currentItem()
-        character = None
-
-        if selected_prebuilt and selected_prebuilt.text() != "--- PREBUILT CHARACTERS ---":
-            name = selected_prebuilt.text()
-            found = next((c for c in prebuilt_characters if c.name == name), None)
-            if found:
-                character = found.to_dict()
-
-        elif selected_custom and selected_custom.text() != "--- CUSTOM CHARACTERS ---":
-            name = selected_custom.text()
-            found = self.character_manager.get_character(name)
-            if found:
-                character = found
-
-        if character:
-            self.on_character_selected_callback(character)
-        else:
-            QMessageBox.warning(self, "No Selection", "Please select a character before starting.")
-
+        item = self.custom_list.currentItem()
+        if item:
+            name = item.text()
+            character = self.character_manager.get_character(name)
+            if character:
+                self.on_character_selected_callback(character)
