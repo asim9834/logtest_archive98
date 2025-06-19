@@ -33,11 +33,28 @@ class Inventory:
 
     def remove_item(self, item_name):
         if self.player_id in self.inventories:
+            original_len = len(self.inventories[self.player_id])
             self.inventories[self.player_id] = [
                 item for item in self.inventories[self.player_id]
                 if item.get("name") != item_name
             ]
             self._save_inventories()
+            return len(self.inventories[self.player_id]) < original_len
+        return False
+
 
     def has_item(self, item_name):
         return any(item.get("name") == item_name for item in self.get_items())
+
+    def to_dict(self):
+        return {
+            "player_id": self.player_id,
+            "items": self.get_items()
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        inv = cls(data.get("player_id", "unknown"))
+        inv.inventories[inv.player_id] = data.get("items", [])
+        inv._save_inventories()
+        return inv
