@@ -42,6 +42,6 @@ class CharacterManager:
         for i, c in enumerate(characters):
             if c["name"] == updated_character["name"]:
                 characters[i] = updated_character
-                self._save_characters(characters)
+                self.save_characters(characters)
                 return True
         return False
