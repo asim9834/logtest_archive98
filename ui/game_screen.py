@@ -9,7 +9,6 @@ class GameScreen(QWidget):
         super().__init__()
         self.character = character_data
         self.on_back_callback = on_back_callback
-
         self.location_manager = LocationManager()
         self.init_ui()
 
@@ -37,7 +36,12 @@ class GameScreen(QWidget):
         layout.addWidget(QLabel("🔸 Konum Seç:"))
         self.location_dropdown = QComboBox()
         self.location_dropdown.addItems(self.location_manager.get_available_locations())
-        self.location_dropdown.setCurrentText(self.location_manager.get_current_location())
+
+        current_loc = self.location_manager.get_current_location()
+        index = self.location_dropdown.findText(current_loc)
+        if index != -1:
+            self.location_dropdown.setCurrentIndex(index)
+
         layout.addWidget(self.location_dropdown)
 
         # 🎮 Butonlar
@@ -56,7 +60,14 @@ class GameScreen(QWidget):
         """Karakter sözlüğünü güzel biçimlendirir."""
         info = []
         for key, value in self.character.items():
-            info.append(f"{key.capitalize()}: {value}")
+            if isinstance(value, dict):
+                formatted = ", ".join(f"{k}: {v}" for k, v in value.items())
+                info.append(f"{key.capitalize()}: {formatted}")
+            elif isinstance(value, list):
+                formatted = ", ".join(str(v) for v in value)
+                info.append(f"{key.capitalize()}: {formatted}")
+            else:
+                info.append(f"{key.capitalize()}: {value}")
         return "\n".join(info)
 
     def change_location(self):
