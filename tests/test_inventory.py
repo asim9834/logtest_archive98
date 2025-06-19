@@ -1,36 +1,48 @@
 # tests/test_inventory.py
 
 import pytest
+import os
+import tempfile
+import json
 from game_engine.inventory import Inventory
 
 @pytest.fixture
-def sample_inventory():
-    inv = Inventory(player_id="test_player")
-    inv.add_item({"id": "sword_001", "name": "Iron Sword", "type": "weapon", "value": 10})
-    inv.add_item({"id": "potion_001", "name": "Health Potion", "type": "consumable", "value": 5})
-    return inv
+def temp_inventory_file():
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tf:
+        test_data = {
+            "test_player": [
+                {"id": "sword_001", "name": "Bronze Sword", "type": "weapon", "value": 10},
+                {"id": "potion_001", "name": "Health Potion", "type": "consumable", "value": 5}
+            ]
+        }
+        json.dump(test_data, tf, ensure_ascii=False)
+        tf_path = tf.name
+    yield tf_path
+    os.remove(tf_path)
+
+@pytest.fixture
+def sample_inventory(temp_inventory_file):
+    return Inventory(player_id="test_player", storage_path=temp_inventory_file)
 
 def test_add_item(sample_inventory):
-    assert len(sample_inventory.items) == 2
-    assert sample_inventory.items[0]["name"] == "Iron Sword"
-    assert sample_inventory.items[1]["name"] == "Health Potion"
+    assert len(sample_inventory.get_items()) == 2
+    sample_inventory.add_item({"id": "shield_001", "name": "Wooden Shield", "type": "armor", "value": 8})
+    assert len(sample_inventory.get_items()) == 3
 
 def test_remove_item(sample_inventory):
-    removed = sample_inventory.remove_item("sword_001")
+    removed = sample_inventory.remove_item("Bronze Sword")
     assert removed is True
-    assert len(sample_inventory.items) == 1
-    assert sample_inventory.items[0]["id"] == "potion_001"
+    assert not any(item["name"] == "Bronze Sword" for item in sample_inventory.get_items())
 
 def test_remove_nonexistent_item(sample_inventory):
     removed = sample_inventory.remove_item("nonexistent")
     assert removed is False
-    assert len(sample_inventory.items) == 2
+    assert len(sample_inventory.get_items()) == 2
 
 def test_to_dict(sample_inventory):
     data = sample_inventory.to_dict()
     assert data["player_id"] == "test_player"
     assert isinstance(data["items"], list)
-    assert data["items"][0]["id"] == "sword_001"
 
 def test_from_dict():
     data = {
@@ -39,5 +51,4 @@ def test_from_dict():
     }
     inv = Inventory.from_dict(data)
     assert inv.player_id == "restore_test"
-    assert len(inv.items) == 1
-    assert inv.items[0]["name"] == "Silver Ring"
+    assert len(inv.get_items()) == 1

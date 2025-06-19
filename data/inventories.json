@@ -95,6 +95,54 @@
       "name": "Health Potion",
       "type": "consumable",
       "value": 5
+    },
+    {
+      "id": "sword_001",
+      "name": "Iron Sword",
+      "type": "weapon",
+      "value": 10
+    },
+    {
+      "id": "potion_001",
+      "name": "Health Potion",
+      "type": "consumable",
+      "value": 5
+    },
+    {
+      "id": "sword_001",
+      "name": "Iron Sword",
+      "type": "weapon",
+      "value": 10
+    },
+    {
+      "id": "potion_001",
+      "name": "Health Potion",
+      "type": "consumable",
+      "value": 5
+    },
+    {
+      "id": "sword_001",
+      "name": "Iron Sword",
+      "type": "weapon",
+      "value": 10
+    },
+    {
+      "id": "potion_001",
+      "name": "Health Potion",
+      "type": "consumable",
+      "value": 5
+    },
+    {
+      "id": "sword_001",
+      "name": "Iron Sword",
+      "type": "weapon",
+      "value": 10
+    },
+    {
+      "id": "potion_001",
+      "name": "Health Potion",
+      "type": "consumable",
+      "value": 5
     }
   ],
   "restore_test": [
