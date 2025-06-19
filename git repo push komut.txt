@@ -1,5 +1,11 @@
-TERMINAL
+TERMINAL Git Hub Repo PUSH Komutu
 
 git add .
 git commit -m "fix: <ÖRNEK UPDATE>"
 git push
+
+
+TERMINAL TEST KOMUTU
+
+$env:PYTHONPATH = "."
+pytest
