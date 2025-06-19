@@ -1,0 +1,10 @@
+{
+  "restore_test": [
+    {
+      "id": "ring_001",
+      "name": "Silver Ring",
+      "type": "accessory",
+      "value": 15
+    }
+  ]
+}

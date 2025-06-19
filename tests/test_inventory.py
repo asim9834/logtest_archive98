@@ -8,17 +8,22 @@ from game_engine.inventory import Inventory
 
 @pytest.fixture
 def temp_inventory_file():
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tf:
-        test_data = {
-            "test_player": [
-                {"id": "sword_001", "name": "Bronze Sword", "type": "weapon", "value": 10},
-                {"id": "potion_001", "name": "Health Potion", "type": "consumable", "value": 5}
-            ]
-        }
-        json.dump(test_data, tf, ensure_ascii=False)
-        tf_path = tf.name
-    yield tf_path
-    os.remove(tf_path)
+    test_data = {
+        "test_player": [
+            {"id": "sword_001", "name": "Bronze Sword", "type": "weapon", "value": 10},
+            {"id": "potion_001", "name": "Health Potion", "type": "consumable", "value": 5}
+        ]
+    }
+
+    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+    tmp_file_path = tmp_file.name
+    tmp_file.close()  # Kapat — tekrar yazma modunda açacağız
+
+    with open(tmp_file_path, "w", encoding="utf-8") as f:
+        json.dump(test_data, f, ensure_ascii=False)
+
+    yield tmp_file_path
+    os.remove(tmp_file_path)
 
 @pytest.fixture
 def sample_inventory(temp_inventory_file):
