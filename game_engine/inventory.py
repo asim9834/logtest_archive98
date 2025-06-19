@@ -1,26 +1,43 @@
 # game_engine/inventory.py
 
+import json
+import os
+
+
 class Inventory:
-    def __init__(self):
-        self.items = []
+    def __init__(self, player_id, storage_path="data/inventories.json"):
+        self.player_id = player_id
+        self.storage_path = storage_path
+        self.inventories = self._load_inventories()
 
-    def add_item(self, item: str):
-        """Envantere bir eşya ekle"""
-        self.items.append(item)
+    def _load_inventories(self):
+        if not os.path.exists(self.storage_path):
+            return {}
 
-    def remove_item(self, item: str):
-        """Eşyayı envanterden çıkar (varsa)"""
-        if item in self.items:
-            self.items.remove(item)
+        with open(self.storage_path, "r", encoding="utf-8") as f:
+            return json.load(f)
 
-    def has_item(self, item: str) -> bool:
-        """Belirli bir eşya envanterde var mı?"""
-        return item in self.items
+    def _save_inventories(self):
+        with open(self.storage_path, "w", encoding="utf-8") as f:
+            json.dump(self.inventories, f, indent=2, ensure_ascii=False)
 
-    def list_items(self) -> list:
-        """Tüm eşyaları döndür"""
-        return self.items
+    def get_items(self):
+        return self.inventories.get(self.player_id, [])
 
-    def clear(self):
-        """Tüm eşyaları temizle"""
-        self.items.clear()
+    def add_item(self, item):
+        if self.player_id not in self.inventories:
+            self.inventories[self.player_id] = []
+
+        self.inventories[self.player_id].append(item)
+        self._save_inventories()
+
+    def remove_item(self, item_name):
+        if self.player_id in self.inventories:
+            self.inventories[self.player_id] = [
+                item for item in self.inventories[self.player_id]
+                if item.get("name") != item_name
+            ]
+            self._save_inventories()
+
+    def has_item(self, item_name):
+        return any(item.get("name") == item_name for item in self.get_items())
