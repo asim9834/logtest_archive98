@@ -1,7 +1,10 @@
+# ui/game_screen.py
+
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QPushButton, QComboBox, QTextEdit
+    QWidget, QVBoxLayout, QLabel, QPushButton, QComboBox, QTextEdit, QHBoxLayout, QGroupBox
 )
 from game_engine.location_manager import LocationManager
+from ui.inventory_widget import InventoryWidget
 
 
 class GameScreen(QWidget):
@@ -13,27 +16,27 @@ class GameScreen(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
 
         # 🧙 Karakter Bilgisi
-        layout.addWidget(QLabel("🔸 Karakter Bilgisi:"))
+        main_layout.addWidget(QLabel("🔸 Karakter Bilgisi:"))
         self.character_info_box = QTextEdit()
         self.character_info_box.setReadOnly(True)
         self.character_info_box.setText(self.format_character_info())
-        layout.addWidget(self.character_info_box)
+        main_layout.addWidget(self.character_info_box)
 
         # 📍 Lokasyon Bilgisi
-        layout.addWidget(QLabel("🔸 Mevcut Konum:"))
+        main_layout.addWidget(QLabel("🔸 Mevcut Konum:"))
         self.location_label = QLabel()
-        layout.addWidget(self.location_label)
+        main_layout.addWidget(self.location_label)
 
-        layout.addWidget(QLabel("🔸 Açıklama:"))
+        main_layout.addWidget(QLabel("🔸 Açıklama:"))
         self.description_box = QTextEdit()
         self.description_box.setReadOnly(True)
-        layout.addWidget(self.description_box)
+        main_layout.addWidget(self.description_box)
 
         # 🔀 Konum Seçme
-        layout.addWidget(QLabel("🔸 Konum Seç:"))
+        main_layout.addWidget(QLabel("🔸 Konum Seç:"))
         self.location_dropdown = QComboBox()
         self.location_dropdown.addItems(self.location_manager.get_available_locations())
 
@@ -42,18 +45,29 @@ class GameScreen(QWidget):
         if index != -1:
             self.location_dropdown.setCurrentIndex(index)
 
-        layout.addWidget(self.location_dropdown)
+        main_layout.addWidget(self.location_dropdown)
+
+        # 🎒 Envanter Bölümü
+        inventory_group = QGroupBox("🎒 Karakter Envanteri")
+        inventory_layout = QVBoxLayout()
+
+        player_id = self.character.get("id", "default_player")
+        self.inventory_widget = InventoryWidget(player_id=player_id)
+        inventory_layout.addWidget(self.inventory_widget)
+
+        inventory_group.setLayout(inventory_layout)
+        main_layout.addWidget(inventory_group)
 
         # 🎮 Butonlar
         move_button = QPushButton("Konuma Git")
         move_button.clicked.connect(self.change_location)
-        layout.addWidget(move_button)
+        main_layout.addWidget(move_button)
 
         back_button = QPushButton("Ana Menüye Dön")
         back_button.clicked.connect(self.on_back_callback)
-        layout.addWidget(back_button)
+        main_layout.addWidget(back_button)
 
-        self.setLayout(layout)
+        self.setLayout(main_layout)
         self.update_location_display()
 
     def format_character_info(self):
