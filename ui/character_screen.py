@@ -155,9 +155,25 @@ class CharacterScreen(QWidget):
             self.display_character_card(character)
 
     def start_game_with_selected(self):
-        item = self.custom_list.currentItem()
-        if item:
-            name = item.text()
-            character = self.character_manager.get_character(name)
-            if character:
-                self.on_character_selected_callback(character)
+        # Öncelik sırası: hazır karakter → özel karakter
+        selected_prebuilt = self.prebuilt_list.currentItem()
+        selected_custom = self.custom_list.currentItem()
+        character = None
+
+        if selected_prebuilt and selected_prebuilt.text() != "--- PREBUILT CHARACTERS ---":
+            name = selected_prebuilt.text()
+            found = next((c for c in prebuilt_characters if c.name == name), None)
+            if found:
+                character = found.to_dict()
+
+        elif selected_custom and selected_custom.text() != "--- CUSTOM CHARACTERS ---":
+            name = selected_custom.text()
+            found = self.character_manager.get_character(name)
+            if found:
+                character = found
+
+        if character:
+            self.on_character_selected_callback(character)
+        else:
+            QMessageBox.warning(self, "No Selection", "Please select a character before starting.")
+
