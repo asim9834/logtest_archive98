@@ -23,12 +23,5 @@
         "class": "Paladin",
         "description": "Nesli devlerden geldiği söylenen yalnız bir adam, oduncu.",
         "story": "TestMan, bir Goliath ırkından ve Paladin sınıfından biri olarak tanınıyor. Geçmişinde: Nesli devlerden geldiği söylenen yalnız bir adam, oduncu. Sadakatiyle bilinir."
-    },
-    {
-        "name": "Hero660",
-        "race": "Goblin",
-        "class": "Haydut",
-        "description": "A mysterious adventurer...",
-        "story": "Hero660, bir Goblin ırkından ve Haydut sınıfından biri olarak tanınıyor. Geçmişinde: A mysterious adventurer... Gölge gibi sessiz hareket eden."
     }
 ]

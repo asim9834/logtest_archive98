@@ -35,3 +35,11 @@ class CharacterManager:
         characters = self.load_characters()
         characters = [c for c in characters if c["name"] != name]
         self.save_characters(characters)
+    def update_character(self, updated_character: dict):
+        """Verilen isme göre karakteri bulur ve günceller."""
+        for i, c in enumerate(self.characters):
+            if c["name"] == updated_character["name"]:
+                self.characters[i] = updated_character
+                self._save_characters()
+                return True
+        return False
